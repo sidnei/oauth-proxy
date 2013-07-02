@@ -151,6 +151,10 @@ class OAuthProxyRequest(proxy.ProxyRequest):
 		headers = self.getAllHeaders().copy()
 		if 'host' not in headers:
 			headers['host'] = host
+                        real_host = host
+                else:
+                    real_host = headers['host']
+		self.path = urlparse.urlunparse((protocol, real_host) + parsed[2:])
 		self.content.seek(0, 0)
 		s = self.content.read()
 		clientFactory = class_(self.method, rest, self.clientproto, headers,
